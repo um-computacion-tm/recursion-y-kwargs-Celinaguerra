@@ -1,16 +1,5 @@
 import unittest
 
-# def buscar_datos(*args, **kwargs):
-#     for key, value in kwargs.items():
-#         esta = True
-#         for i, n in value.items():
-#             if n not in args:
-#                 esta = False
-#         if esta:
-#             return key
-#     return "Los datos no se encuentran en la base de datos"
-
-
 database = {
             "1":{
                 "nombre1":"Pablo",
@@ -33,7 +22,7 @@ database = {
 
 def buscar_datos(*words, **kwords):
     for num, dic in kwords.items():
-        if all(word in dic.values() for word in words):
+        if all(word in dic.values() for word in words) and len(dic.values()) == len(words):
             return num
     return None
 
@@ -46,7 +35,6 @@ class TestBusqueda(unittest.TestCase):
         resultado = buscar_datos("Anci","Elio", **database)
         self.assertEqual(resultado,"2")
 
-
     def test_no_existente(self):
         resultado = buscar_datos("Celina", "Guerra Díaz", **database)
         self.assertEqual(resultado,None)
@@ -55,6 +43,9 @@ class TestBusqueda(unittest.TestCase):
         resultado = buscar_datos("Diego", "Pablo", "Ruiz", "Martinez", "Picasso", **database)
         self.assertEqual(resultado,None)
 
+    def test_no_ordenado_falta_uno(self):
+        resultado = buscar_datos("Diego", "Pablo", "Ruiz", **database)
+        self.assertEqual(resultado,None)
 
 if __name__ == '__main__':
     unittest.main()
